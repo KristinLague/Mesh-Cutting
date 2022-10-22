@@ -30,9 +30,8 @@ public class DrawCut : MonoBehaviour
     }
 
     void CreateSlicePlane() {
-        Vector3 centre = (pointA+pointB)/2;
+        Vector3 centre = (pointA + pointB)/2f;
         Vector3 up = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
-        
         
         Cutter.Cut(obj, centre, up,null,true,true);
     }

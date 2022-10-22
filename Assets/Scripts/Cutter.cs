@@ -101,9 +101,11 @@ public class Cutter : MonoBehaviour
         rightGO.AddComponent<MeshCollider>().sharedMesh = finishedRightMesh;
         rightGO.GetComponent<MeshCollider>().convex = true;
 
-        if(_addRigidbody == true)
+        if(_addRigidbody)
         {
-            rightGO.AddComponent<Rigidbody>();
+            var rightRB = rightGO.AddComponent<Rigidbody>();
+            rightRB.AddRelativeForce(plane.normal * 30f);
+
         }
 
         currentlyCutting = false;
