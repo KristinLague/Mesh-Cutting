@@ -11,13 +11,15 @@ public class DrawCut : MonoBehaviour
     Vector3 pointA;
     Vector3 pointB;
 
+    private LineRenderer cutRender;
 
     Camera cam;
-    public GameObject obj;
-    public Material cutMat;
 
     void Start() {
         cam = FindObjectOfType<Camera>();
+        cutRender = GetComponent<LineRenderer>();
+        cutRender.startWidth = .05f;
+        cutRender.endWidth = .05f;
     }
 
     void Update()
@@ -28,11 +30,24 @@ public class DrawCut : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             pointA = cam.ScreenToWorldPoint(mouse);
+            cutRender.SetPosition(0,pointA);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            cutRender.SetPosition(1,cam.ScreenToWorldPoint(mouse));
+            cutRender.startColor = Color.gray;
+            cutRender.endColor = Color.gray;
         }
 
         if (Input.GetMouseButtonUp(0)) {
             pointB = cam.ScreenToWorldPoint(mouse);
             CreateSlicePlane();
+            cutRender.positionCount = 2;
+            cutRender.startColor = Color.red;
+            cutRender.endColor = Color.red;
+            cutRender.SetPosition(0,pointA);
+            cutRender.SetPosition(1,pointB);
         }
     }
 
@@ -56,7 +71,7 @@ public class DrawCut : MonoBehaviour
             {
                 MeshFilter filter = hit.gameObject.GetComponentInChildren<MeshFilter>();
                 if(filter != null)
-                    Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,cutMat,true,true);
+                    Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,null,true,true);
             }
         }
         
