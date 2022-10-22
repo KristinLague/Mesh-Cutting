@@ -29,10 +29,19 @@ public class DrawCut : MonoBehaviour
         }
     }
 
-    void CreateSlicePlane() {
-        Vector3 centre = (pointA + pointB)/2f;
-        Vector3 up = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
+    void CreateSlicePlane() 
+    {
+        Vector3 cutDir = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
+
+        Ray ray = new Ray(pointA, (pointB - pointA).normalized);
+        if(Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider != null)
+            {
+                Debug.Log(hit.collider.gameObject.name);
+                Cutter.Cut(hit.collider.gameObject, hit.point, cutDir,null,true,true);
+            }
+        }
         
-        Cutter.Cut(obj, centre, up,null,true,true);
     }
 }

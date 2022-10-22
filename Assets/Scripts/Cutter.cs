@@ -75,7 +75,12 @@ public class Cutter : MonoBehaviour
 
         _originalGameObject.GetComponent<MeshFilter>().mesh = finishedLeftMesh;
         _originalGameObject.AddComponent<MeshCollider>().sharedMesh = finishedLeftMesh;
-        _originalGameObject.GetComponent<MeshCollider>().convex = true;
+
+        var colsLeft = _originalGameObject.GetComponents<MeshCollider>();
+        foreach (var col in colsLeft)
+        {
+            col.convex = true; 
+        }
 
         Material[] mats = new Material[finishedLeftMesh.subMeshCount];
         for (int i = 0; i < finishedLeftMesh.subMeshCount; i++)
@@ -99,7 +104,11 @@ public class Cutter : MonoBehaviour
         rightGO.AddComponent<MeshFilter>().mesh = finishedRightMesh;
 
         rightGO.AddComponent<MeshCollider>().sharedMesh = finishedRightMesh;
-        rightGO.GetComponent<MeshCollider>().convex = true;
+        var cols = rightGO.GetComponents<MeshCollider>();
+        foreach (var col in cols)
+        {
+            col.convex = true;
+        }
 
         if(_addRigidbody)
         {
