@@ -73,6 +73,12 @@ public class Cutter : MonoBehaviour
         Mesh finishedLeftMesh = leftMesh.GetGeneratedMesh();
         Mesh finishedRightMesh = rightMesh.GetGeneratedMesh();
 
+        var originalCols = _originalGameObject.GetComponents<Collider>();
+        foreach (var col in originalCols)
+        {
+            Destroy(col);
+        }
+
         _originalGameObject.GetComponent<MeshFilter>().mesh = finishedLeftMesh;
         _originalGameObject.AddComponent<MeshCollider>().sharedMesh = finishedLeftMesh;
 

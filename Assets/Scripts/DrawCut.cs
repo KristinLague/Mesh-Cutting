@@ -32,11 +32,11 @@ public class DrawCut : MonoBehaviour
     void CreateSlicePlane() 
     {
         Vector3 cutDir = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
-
+        
         Ray ray = new Ray(pointA, (pointB - pointA).normalized);
-        if(Physics.Raycast(ray, out RaycastHit hit))
+        var all = Physics.RaycastAll(ray);
         {
-            if (hit.collider != null)
+            foreach (var hit in all)
             {
                 Debug.Log(hit.collider.gameObject.name);
                 Cutter.Cut(hit.collider.gameObject, hit.point, cutDir,null,true,true);
