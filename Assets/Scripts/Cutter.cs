@@ -119,7 +119,7 @@ public class Cutter : MonoBehaviour
         if(_addRigidbody)
         {
             var rightRB = rightGO.AddComponent<Rigidbody>();
-            rightRB.AddRelativeForce(plane.normal * 30f);
+            rightRB.AddRelativeForce(-plane.normal * 130f);
 
         }
 

@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class DrawCut : MonoBehaviour
 {
+   // public Transform boxVis;
     Vector3 pointA;
     Vector3 pointB;
-    
+
+
     Camera cam;
     public GameObject obj;
 
@@ -19,10 +24,11 @@ public class DrawCut : MonoBehaviour
         Vector3 mouse = Input.mousePosition;
         mouse.z = -cam.transform.position.z;
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0))
+        {
             pointA = cam.ScreenToWorldPoint(mouse);
-            
         }
+
         if (Input.GetMouseButtonUp(0)) {
             pointB = cam.ScreenToWorldPoint(mouse);
             CreateSlicePlane();
@@ -31,15 +37,24 @@ public class DrawCut : MonoBehaviour
 
     void CreateSlicePlane() 
     {
-        Vector3 cutDir = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
+        Vector3 pointInPlane = (pointA + pointB) / 2;
         
-        Ray ray = new Ray(pointA, (pointB - pointA).normalized);
-        var all = Physics.RaycastAll(ray);
+        Vector3 cutPlaneNormal = Vector3.Cross((pointA-pointB),(pointA-cam.transform.position)).normalized;
+        Quaternion orientation = Quaternion.FromToRotation(Vector3.up, cutPlaneNormal);
+        //boxVis.rotation = orientation;
+       // boxVis.localScale = new Vector3(10, 0.25f, 10);
+       // boxVis.position = pointInPlane;
+
+        
+        var all = Physics.OverlapBox(pointInPlane, new Vector3(100, 0.01f, 100), orientation);
+        
+        //Ray ray = new Ray(pointA, (pointB - pointA).normalized);
+        //var all = Physics.RaycastAll(ray);
         {
             foreach (var hit in all)
             {
-                Debug.Log(hit.collider.gameObject.name);
-                Cutter.Cut(hit.collider.gameObject, hit.point, cutDir,null,true,true);
+                Debug.Log(hit.gameObject.name);
+                Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,null,true,true);
             }
         }
         
