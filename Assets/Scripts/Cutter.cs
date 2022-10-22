@@ -106,7 +106,6 @@ public class Cutter : MonoBehaviour
             mats[i] = _originalGameObject.GetComponent<MeshRenderer>().material;
         }
         rightGO.GetComponent<MeshRenderer>().materials = mats;
-
         rightGO.AddComponent<MeshFilter>().mesh = finishedRightMesh;
 
         rightGO.AddComponent<MeshCollider>().sharedMesh = finishedRightMesh;
@@ -119,7 +118,7 @@ public class Cutter : MonoBehaviour
         if(_addRigidbody)
         {
             var rightRB = rightGO.AddComponent<Rigidbody>();
-            rightRB.AddRelativeForce(-plane.normal * 130f);
+            rightRB.AddRelativeForce(-plane.normal * 25f);
 
         }
 

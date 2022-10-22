@@ -14,6 +14,7 @@ public class DrawCut : MonoBehaviour
 
     Camera cam;
     public GameObject obj;
+    public Material cutMat;
 
     void Start() {
         cam = FindObjectOfType<Camera>();
@@ -53,8 +54,9 @@ public class DrawCut : MonoBehaviour
         {
             foreach (var hit in all)
             {
-                Debug.Log(hit.gameObject.name);
-                Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,null,true,true);
+                MeshFilter filter = hit.gameObject.GetComponentInChildren<MeshFilter>();
+                if(filter != null)
+                    Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,cutMat,true,true);
             }
         }
         
