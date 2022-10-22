@@ -12,6 +12,7 @@ public class DrawCut : MonoBehaviour
     Vector3 pointB;
 
     private LineRenderer cutRender;
+    private bool animateCut;
 
     Camera cam;
 
@@ -30,11 +31,12 @@ public class DrawCut : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             pointA = cam.ScreenToWorldPoint(mouse);
-            cutRender.SetPosition(0,pointA);
         }
 
         if (Input.GetMouseButton(0))
         {
+            animateCut = false;
+            cutRender.SetPosition(0,pointA);
             cutRender.SetPosition(1,cam.ScreenToWorldPoint(mouse));
             cutRender.startColor = Color.gray;
             cutRender.endColor = Color.gray;
@@ -48,6 +50,12 @@ public class DrawCut : MonoBehaviour
             cutRender.endColor = Color.red;
             cutRender.SetPosition(0,pointA);
             cutRender.SetPosition(1,pointB);
+            animateCut = true;
+        }
+
+        if (animateCut)
+        {
+            cutRender.SetPosition(0,Vector3.Lerp(pointA,pointB,1f));
         }
     }
 
