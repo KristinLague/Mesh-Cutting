@@ -3,32 +3,29 @@ using UnityEngine;
 
 public class MeshTriangle
 {
-    List<Vector3> vertices          = new List<Vector3>();
-    List<Vector3> normals           = new List<Vector3>();
-    List<Vector2> uvs               = new List<Vector2>();
-    int submeshIndex;
+    private int submeshIndex;
 
-    public List<Vector3> Vertices           { get { return vertices; }          set { vertices = value; } }
-    public List<Vector3> Normals            { get { return normals; }           set { normals = value; } }
-    public List<Vector2> UVs                { get { return uvs; }               set { uvs = value; } }
-    public int SubmeshIndex                 { get { return submeshIndex; }      set { SubmeshIndex = value; } }
+    public List<Vector3> Vertices { get; set; } = new();
+    public List<Vector3> Normals { get; set; } = new();
+    public List<Vector2> UVs { get; set; } = new();
+    public int SubmeshIndex { get => submeshIndex; private set => SubmeshIndex = value; }
 
     public MeshTriangle(Vector3[] _vertices, Vector3[] _normals, Vector2[] _uvs, int _submeshIndex) 
     {
         Clear();
 
-        vertices.AddRange(_vertices);
-        normals.AddRange(_normals);
-        uvs.AddRange(_uvs);
+        Vertices.AddRange(_vertices);
+        Normals.AddRange(_normals);
+        UVs.AddRange(_uvs);
 
         submeshIndex = _submeshIndex;
     }
 
-    public void Clear()
+    private void Clear()
     {
-        vertices.Clear();
-        normals.Clear();
-        uvs.Clear();
+        Vertices.Clear();
+        Normals.Clear();
+        UVs.Clear();
         
         submeshIndex = 0;
     }

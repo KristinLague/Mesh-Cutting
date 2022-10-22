@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class Cutter : MonoBehaviour
 {
-    public static bool currentlyCutting;
-    public static Mesh originalMesh;
+    private static bool currentlyCutting;
+    private static Mesh originalMesh;
 
     public static void Cut(GameObject _originalGameObject, Vector3 _contactPoint, Vector3 _direction, Material _cutMaterial = null, bool fill = true, bool _addRigidbody = false)
     {
         if(currentlyCutting)
-        {
             return;
-        }
 
         currentlyCutting = true;
 
-        //We are instantiating a plane through our initial object to seperate the left and right side from each other
+        //We are instantiating a plane through our initial object to separate the left and right side from each other
         Plane plane = new Plane(_originalGameObject.transform.InverseTransformDirection(-_direction), _originalGameObject.transform.InverseTransformPoint(_contactPoint));
         originalMesh = _originalGameObject.GetComponent<MeshFilter>().mesh;
         List<Vector3> addedVertices = new List<Vector3>();
@@ -69,10 +67,8 @@ public class Cutter : MonoBehaviour
         }
 
         //Filling our cut
-        if(fill == true)
-        {
+        if(fill)
             FillCut(addedVertices, plane, leftMesh, rightMesh);
-        }
 
         Mesh finishedLeftMesh = leftMesh.GetGeneratedMesh();
         Mesh finishedRightMesh = rightMesh.GetGeneratedMesh();
@@ -117,24 +113,21 @@ public class Cutter : MonoBehaviour
     private static MeshTriangle GetTriangle(int _triangleIndexA, int _triangleIndexB, int _triangleIndexC, int _submeshIndex)
     {
         //Adding the Vertices at the triangleIndex
-        Vector3[] verticesToAdd = new Vector3[]
-        {
+        Vector3[] verticesToAdd = {
             originalMesh.vertices[_triangleIndexA],
             originalMesh.vertices[_triangleIndexB],
             originalMesh.vertices[_triangleIndexC]
         };
 
         //Adding the normals at the triangle index
-        Vector3[] normalsToAdd = new Vector3[]
-        {
+        Vector3[] normalsToAdd = {
             originalMesh.normals[_triangleIndexA],
             originalMesh.normals[_triangleIndexB],
             originalMesh.normals[_triangleIndexC]
         };
 
         //adding the uvs at the triangleIndex
-        Vector2[] uvsToAdd = new Vector2[]
-        {
+        Vector2[] uvsToAdd = {
             originalMesh.uv[_triangleIndexA],
             originalMesh.uv[_triangleIndexB],
             originalMesh.uv[_triangleIndexC]
@@ -304,30 +297,27 @@ public class Cutter : MonoBehaviour
 		_triangle.Normals[2] = _triangle.Normals[0];
 		_triangle.Normals[0] = temp;
 
-		Vector2 temp2 = _triangle.UVs[2];
-		_triangle.UVs[2] = _triangle.UVs[0];
-		_triangle.UVs[0] = temp2;
-		
+		(_triangle.UVs[2], _triangle.UVs[0]) = (_triangle.UVs[0], _triangle.UVs[2]);
     }
 
     public static void FillCut(List<Vector3> _addedVertices, Plane _plane, GeneratedMesh _leftMesh, GeneratedMesh _rightMesh)
     {
         List<Vector3> vertices = new List<Vector3>();
-        List<Vector3> polygone = new List<Vector3>();
+        List<Vector3> polygon = new List<Vector3>();
 
         for (int i = 0; i < _addedVertices.Count; i++)
         {
             if(!vertices.Contains(_addedVertices[i]))
             {
-                polygone.Clear();
-                polygone.Add(_addedVertices[i]);
-                polygone.Add(_addedVertices[i + 1]);
+                polygon.Clear();
+                polygon.Add(_addedVertices[i]);
+                polygon.Add(_addedVertices[i + 1]);
 
                 vertices.Add(_addedVertices[i]);
                 vertices.Add(_addedVertices[i + 1]);
 
-                EvaluatePairs(_addedVertices, vertices, polygone);
-                Fill(polygone, _plane, _leftMesh, _rightMesh);
+                EvaluatePairs(_addedVertices, vertices, polygon);
+                Fill(polygon, _plane, _leftMesh, _rightMesh);
             }
         }
     }
@@ -356,7 +346,7 @@ public class Cutter : MonoBehaviour
         }
     }
 
-    public static void Fill(List<Vector3> _vertices, Plane _plane, GeneratedMesh _leftMesh, GeneratedMesh _rightMesh)
+    private static void Fill(List<Vector3> _vertices, Plane _plane, GeneratedMesh _leftMesh, GeneratedMesh _rightMesh)
     {
         //Firstly we need the center we do this by adding up all the vertices and then calculating the average
         Vector3 centerPosition = Vector3.zero;
@@ -364,7 +354,7 @@ public class Cutter : MonoBehaviour
         {
             centerPosition += _vertices[i];
         }
-        centerPosition = centerPosition / _vertices.Count;
+        centerPosition /= _vertices.Count;
 
         //We now need an Upward Axis we use the plane we cut the mesh with for that 
         Vector3 up = new Vector3()
@@ -396,9 +386,9 @@ public class Cutter : MonoBehaviour
                 y = .5f + Vector3.Dot(displacement, up)
             };
 
-            Vector3[] vertices = new Vector3[]{_vertices[i], _vertices[(i+1) % _vertices.Count], centerPosition};
-			Vector3[] normals = new Vector3[]{-_plane.normal, -_plane.normal, -_plane.normal};
-			Vector2[] uvs   = new Vector2[]{uv1, uv2, new Vector2(0.5f, 0.5f)};
+            Vector3[] vertices = {_vertices[i], _vertices[(i+1) % _vertices.Count], centerPosition};
+			Vector3[] normals = {-_plane.normal, -_plane.normal, -_plane.normal};
+			Vector2[] uvs   = {uv1, uv2, new(0.5f, 0.5f)};
 
             MeshTriangle currentTriangle = new MeshTriangle(vertices, normals, uvs, originalMesh.subMeshCount + 1);
 
@@ -408,7 +398,7 @@ public class Cutter : MonoBehaviour
             }
             _leftMesh.AddTriangle(currentTriangle);
 
-            normals = new Vector3[] { _plane.normal, _plane.normal, _plane.normal };
+            normals = new[] { _plane.normal, _plane.normal, _plane.normal };
             currentTriangle = new MeshTriangle(vertices, normals, uvs, originalMesh.subMeshCount + 1);
 
             if(Vector3.Dot(Vector3.Cross(vertices[1] - vertices[0],vertices[2] - vertices[0]),normals[0]) < 0)

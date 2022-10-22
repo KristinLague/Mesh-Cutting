@@ -28,12 +28,12 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.ide.visualstudio": "2.0.16",
-        "com.unity.ide.rider": "3.0.15",
-        "com.unity.ide.vscode": "1.2.5",
+        "com.unity.ide.visualstudio": "2.0.12",
+        "com.unity.ide.rider": "3.0.7",
+        "com.unity.ide.vscode": "1.2.4",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.performance.profile-analyzer": "1.1.1",
-        "com.unity.test-framework": "1.1.31",
+        "com.unity.test-framework": "1.1.29",
         "com.unity.testtools.codecoverage": "1.0.1"
       }
     },
@@ -62,13 +62,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.nuget.newtonsoft-json": {
-      "version": "3.0.2",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.performance.profile-analyzer": {
       "version": "1.1.1",
       "depth": 1,
@@ -77,13 +70,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.4.0",
+      "version": "1.0.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.modules.androidjni": "1.0.0"
+        "com.unity.modules.unitywebrequest": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
