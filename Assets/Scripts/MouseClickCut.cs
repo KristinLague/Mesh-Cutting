@@ -24,12 +24,12 @@ public class MouseClickCut : MonoBehaviour
                    
                     if(angle == Angle.Up)
 					{
-                        Cutter.Cut(victim, hit.point, Vector3.up,null,true,true);
+                        Cutter.Cut(victim, hit.point, Vector3.up);
 						
                     } 
 					else if (angle == Angle.Forward)
 					{
-						Cutter.Cut(victim, hit.point, Vector3.forward,null,true,true);
+						Cutter.Cut(victim, hit.point, Vector3.forward);
 						
 					}
 				}

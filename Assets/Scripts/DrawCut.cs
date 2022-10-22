@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using UnityEngine;
+﻿using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -46,8 +43,6 @@ public class DrawCut : MonoBehaviour
             pointB = cam.ScreenToWorldPoint(mouse);
             CreateSlicePlane();
             cutRender.positionCount = 2;
-            cutRender.startColor = Color.red;
-            cutRender.endColor = Color.red;
             cutRender.SetPosition(0,pointA);
             cutRender.SetPosition(1,pointB);
             animateCut = true;
@@ -79,7 +74,7 @@ public class DrawCut : MonoBehaviour
             {
                 MeshFilter filter = hit.gameObject.GetComponentInChildren<MeshFilter>();
                 if(filter != null)
-                    Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal,null,true,true);
+                    Cutter.Cut(hit.gameObject, pointInPlane, cutPlaneNormal);
             }
         }
         
